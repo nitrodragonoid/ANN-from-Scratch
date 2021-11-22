@@ -1,3 +1,4 @@
+#pragma once
 #include "layer.hpp"
 
 class NeuralNetwork

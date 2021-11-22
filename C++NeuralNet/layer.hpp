@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include "neuron.hpp"
@@ -12,4 +14,6 @@ class Layer
     //Layer();
 
     void addNeuron(Neuron n);
+
+    int NumNeurons();
 };

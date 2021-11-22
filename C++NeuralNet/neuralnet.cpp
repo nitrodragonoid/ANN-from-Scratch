@@ -23,8 +23,31 @@ NeuralNetwork::NeuralNetwork(const vector<int> &topology)
         for (int j = 0; j <= topology[i]; j++) //adding neurons to layer
         {
             Neuron neuron(conections);
+            neuron.setIndex(j);
             layers.back().addNeuron(neuron);
             cout << "neuron added" << endl;
+        }
+    }
+}
+
+
+
+void NeuralNetwork::FeedForward(const vector <double> input)
+{
+    //assert(input.size == layers[0].NumNeurons - 1);
+    for (int j = 0; j <input.size();j++) // feed ing input to the first layer.
+    {
+        layers[0].neurons[j].setVal(input[j]);
+    }
+
+    for (int i =1; i < layers.size(); i++)
+    {
+        //layers[i].neurons[j].setVal(input[j]);
+        Layer &previous = layers[i-1];
+        for (int n = 0; n < layers[i].neurons.size(); n++)
+        {
+            //layers[i].neurons[j].setVal(input[j]);
+            layers[i].neurons[n].feedforward(previous);
         }
     }
 }
