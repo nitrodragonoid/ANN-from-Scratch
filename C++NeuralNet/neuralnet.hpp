@@ -3,11 +3,13 @@
 
 class NeuralNetwork
 {
-    public:
+private:   
     //Layer layer1; 
     //Layer layer2;
     vector <Layer> layers;
+    double error;
 
+public:
     NeuralNetwork(const vector<int> &topology);
     void BackPropagation(const vector <double> target);
     void FeedForward(const vector <double> input);

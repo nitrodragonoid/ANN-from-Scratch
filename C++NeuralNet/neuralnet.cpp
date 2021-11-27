@@ -1,4 +1,6 @@
 #include "neuralnet.hpp"
+//#include <cmath>
+#include <math.h>
 
 NeuralNetwork::NeuralNetwork(const vector<int> &topology)
 {
@@ -22,8 +24,8 @@ NeuralNetwork::NeuralNetwork(const vector<int> &topology)
 
         for (int j = 0; j <= topology[i]; j++) //adding neurons to layer
         {
-            Neuron neuron(conections);
-            neuron.setIndex(j);
+            Neuron neuron(conections,j);
+            //neuron.setIndex(j);
             layers.back().addNeuron(neuron);
             cout << "neuron added" << endl;
         }
@@ -50,4 +52,25 @@ void NeuralNetwork::FeedForward(const vector <double> input)
             layers[i].neurons[n].feedforward(previous);
         }
     }
+}
+
+
+
+void NeuralNetwork::BackPropagation(const vector <double> target)
+{
+    Layer &outputLayer = layers.back();
+
+    double sum = 0.0;
+    double rms;
+    double delta;
+
+    for (int i = 0; i < outputLayer.neurons.size()-1; i++)
+    {
+        delta = target[i] - outputLayer.neurons[i].getval();
+        sum += (delta * delta);
+    }
+    rms = sqrt((1/outputLayer.neurons.size())*sum);
+
+    error = rms;
+
 }

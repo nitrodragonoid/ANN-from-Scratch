@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include "layer.hpp"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ Edge::Edge()
     cout << weight << endl;
 }
 
-Neuron::Neuron(int connect)
+Neuron::Neuron(int connect,int ind)
 {
     for (int i = 0; i < connect; i++)
     {
@@ -29,7 +30,7 @@ Neuron::Neuron(int connect)
         edges.push_back(e);
     }
     cout << "Forward connection of " << connect << " created" << endl;
-    
+    index = ind;  
 }
 
 
@@ -64,4 +65,9 @@ double Neuron::activationDerivative(double sum)
     double yp;
     yp = 1 - ((tanh(sum))*tanh(sum));
     return yp;
+}
+
+double Neuron::getval()
+{
+    return val;
 }
