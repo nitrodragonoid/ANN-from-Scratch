@@ -66,6 +66,6 @@ int main()
     top.push_back(7);
     top.push_back(6);
     top.push_back(2);
-    NeuralNetwork Net(top);
+    NeuralNetwork Net(top, 0.15, 0.5);
     return 0;
 }

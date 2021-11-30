@@ -22,9 +22,11 @@ class Neuron
 private:
     double val;
     int index;
+    double gradient;
+
 public:
     vector<Edge> edges;
-    Neuron(int connect,int ind); //construct a densely connected neuron
+    Neuron(int connect,int ind, double e, double a); //construct a densely connected neuron
 
     void setVal(double v);
     void feedforward(const Layer &prev);
@@ -35,4 +37,12 @@ public:
     double activation(double sum);
     double activationDerivative(double sum);
 
+    
+    void setGrad(double target);
+    void setGrad(Layer &next);
+    void updateWeight(Layer &prev);
+
+
+    double eta;
+    double alpha;
 };

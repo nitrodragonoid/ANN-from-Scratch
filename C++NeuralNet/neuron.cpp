@@ -22,7 +22,7 @@ Edge::Edge()
     cout << weight << endl;
 }
 
-Neuron::Neuron(int connect,int ind)
+Neuron::Neuron(int connect,int ind, double e, double a)
 {
     for (int i = 0; i < connect; i++)
     {
@@ -31,6 +31,9 @@ Neuron::Neuron(int connect,int ind)
     }
     cout << "Forward connection of " << connect << " created" << endl;
     index = ind;  
+
+    eta = e;
+    alpha = a;
 }
 
 
@@ -70,4 +73,37 @@ double Neuron::activationDerivative(double sum)
 double Neuron::getval()
 {
     return val;
+}
+
+void Neuron::setGrad(double target)
+{
+    gradient = (target - val) * activationDerivative(val);
+}
+
+
+void Neuron::setGrad(Layer &next)
+{
+    double sum = 0;
+
+    for (int n = 0; n < next.neurons.size()-1; n++)
+    {
+        sum += edges[n].weight * next.neurons[n].gradient;
+    }
+    gradient = sum * activationDerivative(val);
+}
+
+void Neuron::updateWeight(Layer &prev)
+{
+    for (int n = 0; n < prev.neurons.size(); n++)
+    {
+        Neuron &neuron = prev.neurons[n];
+
+        double oldDelta = neuron.edges[index].delWeight;
+
+        double Delta = (eta * neuron.getval() * gradient) + (alpha * oldDelta);
+
+        neuron.edges[index].delWeight = Delta;
+        neuron.edges[index].weight += Delta;
+
+    }
 }
