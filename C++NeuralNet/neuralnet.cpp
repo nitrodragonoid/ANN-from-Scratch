@@ -29,6 +29,7 @@ NeuralNetwork::NeuralNetwork(const vector<int> &topology, double eta, double alp
             layers.back().addNeuron(neuron);
             cout << "neuron added" << endl;
         }
+        layers.back().neurons.back().setVal(1.0);
     }
 }
 
@@ -67,20 +68,22 @@ void NeuralNetwork::BackPropagation(const vector <double> target)
     //calculate error from output layer
     for (int i = 0; i < outputLayer.neurons.size()-1; i++)
     {
+        //cout << "setting output" << endl;
         delta = target[i] - outputLayer.neurons[i].getval();
         sum += (delta * delta);
     }
     rms = sqrt((1/outputLayer.neurons.size())*sum); //calculate root mean square
 
     error = rms;
-
+    //cout << "rms calculated!" << endl;
     //calculate avg error
-    avgError = (avgError * avgSmoothingFactor + error) / (avgSmoothingFactor + 1);
-
+    //avgError = (avgError * avgSmoothingFactor + error) / (avgSmoothingFactor + 1);
+    cout << "Error: " << rms << endl;
     
     //calculate gradient of ouytput layer
     for (int  n = 0; n < outputLayer.neurons.size() - 1; n++)
     {
+        //cout << "calc output grad" << endl;
         outputLayer.neurons[n].setGrad(target[n]);
     }
     
@@ -88,6 +91,7 @@ void NeuralNetwork::BackPropagation(const vector <double> target)
     // calculate gradient for each hidden layer
     for (int l = layers.size()-2; l > 0; l--)
     {
+        //cout << "calc hidden grad" << endl;
         Layer &current = layers[l];
         Layer &next  = layers[l+1];
         for (int n = 0; n < current.neurons.size(); n++)
@@ -97,8 +101,9 @@ void NeuralNetwork::BackPropagation(const vector <double> target)
     }
 
     //update weights accordingly
-    for (int l = layers.size()-1; l > 0; l++)
+    for (int l = layers.size()-1; l > 0; l--)
     {
+        //cout << "updating weights" << endl;
         Layer &current  = layers[l];
         Layer &prev  = layers[l-1];
 
@@ -111,13 +116,15 @@ void NeuralNetwork::BackPropagation(const vector <double> target)
 }
 
 
-void NeuralNetwork::GetResult(vector <double> result)
+void NeuralNetwork::GetResult(/*vector <double> result*/)
 {
-    result.clear();
+    //result.clear();
 
     Layer &outputLayer = layers.back();
     for (int n = 0; n < outputLayer.neurons.size() - 1; n++)
     {
-        result.push_back(outputLayer.neurons[n].getval());
+        //result.push_back(outputLayer.neurons[n].getval());
+        cout << outputLayer.neurons[n].getval() << ", ";
     }
+    cout << endl;
 }
